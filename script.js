@@ -85,3 +85,36 @@ const GameController = (() => {
 
     return { startGame, playRound };
 })();
+
+// Display Controller Module (IIFE)
+const DisplayController = (() => {
+    const cells = document.querySelectorAll(".cell");
+    const message = document.querySelector("#message");
+    const restartBtn = document.querySelector("#restart");
+
+    cells.forEach((cell, index) => {
+        cell.addEventListener("click", () => GameController.playRound(index));
+    });
+
+    restartBtn.addEventListener("click", () => {
+        const player1Name = prompt("Enter Player 1's name:");
+        const player2Name = prompt("Enter Player 2's name:");
+        GameController.startGame(player1Name || "Player 1", player2Name || "Player 2");
+    });
+
+    const renderBoard = () => {
+        const board = Gameboard.getBoard();
+        cells.forEach((cell, index) => {
+            cell.textContent = board[index];
+        });
+    };
+
+    const updateMessage = (msg) => {
+        message.textContent = msg;
+    };
+
+    return { renderBoard, updateMessage };
+})();
+
+// Start the game initially
+GameController.startGame("Player 1", "Player 2");
